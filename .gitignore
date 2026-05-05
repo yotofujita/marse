@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.env
+*.egg-info/
+.pytest_cache/
+
+# Data and models
+data/raw/*
+data/processed/*
+results/checkpoints/*
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.h5
+
+# Notebooks
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

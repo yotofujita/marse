@@ -1,0 +1,31 @@
+---
+title: MARSE demo page
+author:
+  - name: Yoto Fujita
+    affiliations:
+      - CentraleSupélec, IETR (UMR CNRS 6164)
+      - Grenoble INP, GIPSA-Lab (UMR CNRS 5216)
+date: today
+date-format: long
+place: Rennes, France
+number-sections: true
+bibliography: references.bib
+csl: elsevier-harvard2.csl
+format:
+  html:
+    embed-resources: true
+    html-math-method: katex
+---
+
+# Overview
+
+demo here
+
+---
+
+# References
+
+::: {#refs}
+:::
+
+---

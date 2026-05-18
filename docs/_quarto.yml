@@ -3,6 +3,7 @@ project:
   resources: 
     - "*.mp3"
     - "*.wav"
+    - "resources/**/*.wav"
 
 manuscript:
   article: index.qmd
@@ -15,7 +16,6 @@ format:
 
 execute:
   freeze: true
-
 
 
 

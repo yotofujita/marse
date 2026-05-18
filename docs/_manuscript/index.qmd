@@ -1,0 +1,685 @@
+---
+title: MARSE Demo Page
+author:
+  - name: Yoto Fujita
+    affiliations:
+      - CentraleSupélec, IETR (UMR CNRS 6164)
+      - Grenoble INP, GIPSA-Lab (UMR CNRS 5216)
+date: today
+place: Rennes, France
+number-sections: false
+bibliography: references.bib
+format:
+  html:
+    embed-resources: false
+    html-math-method: katex
+---
+
+# Abstract
+
+This demo page presents qualitative speech enhancement examples for MARSE and related baselines.
+
+# Method
+
+The tables below hardcode all referenced audio examples with simple inline HTML audio players.
+
+# Audio Example
+
+
+```{=html}
+<label for="dataset-select">Dataset</label>
+<select id="dataset-select">
+  <option value="libri2mix">Libri2Mix</option>
+  <option value="libridemand">LibriDEMAND</option>
+</select>
+
+<label for="sample-select">Sample ID</label>
+<select id="sample-select"></select>
+
+<script>
+const datasetSamples = {
+  libri2mix: [
+    "Libri2Mix_test_1089-134686-0007_7021-85628-0018",
+    "Libri2Mix_test_1089-134691-0019_672-122797-0023",
+    "Libri2Mix_test_1089-134686-0024_1995-1836-0013",
+    "Libri2Mix_test_1089-134691-0014_7127-75947-0023",
+    "Libri2Mix_test_1284-1180-0020_8555-284447-0005",
+    "Libri2Mix_test_1221-135766-0003_1320-122617-0009",
+    "Libri2Mix_test_1284-1180-0032_2830-3979-0003",
+    "Libri2Mix_test_1284-1180-0005_6829-68771-0000",
+    "Libri2Mix_test_1284-1180-0014_6829-68769-0006",
+    "Libri2Mix_test_121-127105-0019_4446-2275-0029",
+  ],
+  libridemand: [
+    "Libri1Mix_test_1363-135842-0000",
+    "Libri1Mix_test_1898-145720-0018",
+    "Libri1Mix_test_441-130108-0041",
+    "Libri1Mix_test_8238-283452-0035",
+    "Libri1Mix_test_3699-175950-0005",
+    "Libri1Mix_test_27-124992-0056",
+    "Libri1Mix_test_229-130880-0014",
+    "Libri1Mix_test_2952-410-0016",
+    "Libri1Mix_test_6078-54013-0044",
+    "Libri1Mix_test_201-122255-0029",
+  ]
+};
+const sampleLabels = {
+  "Libri2Mix_test_1089-134686-0007_7021-85628-0018": "Libri1Mix example 1",
+  "Libri2Mix_test_1089-134691-0019_672-122797-0023": "Libri1Mix example 2",
+  "Libri2Mix_test_1089-134686-0024_1995-1836-0013": "Libri1Mix example 3",
+  "Libri2Mix_test_1089-134691-0014_7127-75947-0023": "Libri1Mix example 4",
+  "Libri2Mix_test_1284-1180-0020_8555-284447-0005": "Libri1Mix example 5",
+  "Libri2Mix_test_1221-135766-0003_1320-122617-0009": "Libri1Mix example 6",
+  "Libri2Mix_test_1284-1180-0032_2830-3979-0003": "Libri1Mix example 7",
+  "Libri2Mix_test_1284-1180-0005_6829-68771-0000": "Libri1Mix example 8",
+  "Libri2Mix_test_1284-1180-0014_6829-68769-0006": "Libri1Mix example 9",
+  "Libri2Mix_test_121-127105-0019_4446-2275-0029": "Libri1Mix example 10",
+  "Libri1Mix_test_1363-135842-0000": "LibriDEMAND example 1",
+  "Libri1Mix_test_1898-145720-0018": "LibriDEMAND example 2",
+  "Libri1Mix_test_441-130108-0041": "LibriDEMAND example 3",
+  "Libri1Mix_test_8238-283452-0035": "LibriDEMAND example 4",
+  "Libri1Mix_test_3699-175950-0005": "LibriDEMAND example 5",
+  "Libri1Mix_test_27-124992-0056": "LibriDEMAND example 6",
+  "Libri1Mix_test_229-130880-0014": "LibriDEMAND example 7",
+  "Libri1Mix_test_2952-410-0016": "LibriDEMAND example 8",
+  "Libri1Mix_test_6078-54013-0044": "LibriDEMAND example 9",
+  "Libri1Mix_test_201-122255-0029": "LibriDEMAND example 10",
+};
+const datasetSelect = document.getElementById("dataset-select");
+const sampleSelect = document.getElementById("sample-select");
+function updateSamples() {
+  const samples = datasetSamples[datasetSelect.value];
+  sampleSelect.innerHTML = samples.map((sample) => `<option value="${sample}">${sampleLabels[sample]}</option>`).join("");
+  updateSections();
+}
+function updateSections() {
+  const selected = sampleSelect.value;
+  document.querySelectorAll("[data-sample-section]").forEach((section) => {
+    section.hidden = section.dataset.sampleSection !== selected;
+  });
+}
+datasetSelect.addEventListener("change", updateSamples);
+sampleSelect.addEventListener("change", updateSections);
+updateSamples();
+</script>
+```
+
+```{=html}
+<div data-sample-section="Libri2Mix_test_1089-134686-0007_7021-85628-0018" hidden>
+```
+
+## Libri1Mix example 1
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134686-0007_7021-85628-0018/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134686-0007_7021-85628-0018/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N5/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N10/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N20/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N30/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N40/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N50/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N5/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N10/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N20/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N30/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N40/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N50/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N5/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N10/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N20/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N30/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N40/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N50/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div data-sample-section="Libri2Mix_test_1089-134691-0019_672-122797-0023" hidden>
+```
+
+## Libri1Mix example 2
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134691-0019_672-122797-0023/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134691-0019_672-122797-0023/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N5/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N10/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N20/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N30/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N40/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N50/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N5/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N10/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N20/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N30/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N40/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N50/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N5/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N10/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N20/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N30/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N40/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N50/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div data-sample-section="Libri2Mix_test_1089-134686-0024_1995-1836-0013" hidden>
+```
+
+## Libri1Mix example 3
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134686-0024_1995-1836-0013/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134686-0024_1995-1836-0013/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N5/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N10/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N20/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N30/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N40/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N50/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N5/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N10/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N20/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N30/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N40/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N50/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N5/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N10/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N20/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N30/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N40/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N50/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div data-sample-section="Libri2Mix_test_1089-134691-0014_7127-75947-0023" hidden>
+```
+
+## Libri1Mix example 4
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134691-0014_7127-75947-0023/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134691-0014_7127-75947-0023/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N5/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N10/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N20/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N30/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N40/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N50/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N5/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N10/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N20/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N30/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N40/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N50/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N5/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N10/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N20/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N30/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N40/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N50/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div data-sample-section="Libri2Mix_test_1284-1180-0020_8555-284447-0005" hidden>
+```
+
+## Libri1Mix example 5
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0020_8555-284447-0005/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0020_8555-284447-0005/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N5/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N10/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N20/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N30/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N40/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N50/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N5/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N10/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N20/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N30/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N40/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N50/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N5/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N10/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N20/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N30/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N40/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N50/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div data-sample-section="Libri2Mix_test_1221-135766-0003_1320-122617-0009" hidden>
+```
+
+## Libri1Mix example 6
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1221-135766-0003_1320-122617-0009/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1221-135766-0003_1320-122617-0009/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N5/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N10/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N20/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N30/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N40/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N50/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N5/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N10/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N20/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N30/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N40/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N50/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N5/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N10/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N20/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N30/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N40/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N50/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div data-sample-section="Libri2Mix_test_1284-1180-0032_2830-3979-0003" hidden>
+```
+
+## Libri1Mix example 7
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0032_2830-3979-0003/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0032_2830-3979-0003/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N5/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N10/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N20/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N30/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N40/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N50/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N5/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N10/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N20/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N30/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N40/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N50/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N5/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N10/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N20/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N30/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N40/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N50/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div data-sample-section="Libri2Mix_test_1284-1180-0005_6829-68771-0000" hidden>
+```
+
+## Libri1Mix example 8
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0005_6829-68771-0000/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0005_6829-68771-0000/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N5/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N10/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N20/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N30/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N40/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N50/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N5/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N10/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N20/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N30/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N40/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N50/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N5/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N10/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N20/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N30/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N40/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N50/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div data-sample-section="Libri2Mix_test_1284-1180-0014_6829-68769-0006" hidden>
+```
+
+## Libri1Mix example 9
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0014_6829-68769-0006/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0014_6829-68769-0006/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N5/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N10/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N20/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N30/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N40/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N50/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N5/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N10/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N20/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N30/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N40/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N50/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N5/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N10/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N20/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N30/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N40/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N50/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div data-sample-section="Libri2Mix_test_121-127105-0019_4446-2275-0029" hidden>
+```
+
+## Libri1Mix example 10
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_121-127105-0019_4446-2275-0029/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_121-127105-0019_4446-2275-0029/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/cnar_N1/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N5/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N10/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N20/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N30/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N40/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_autoregressive_N50/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N5/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N10/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N20/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N30/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N40/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_random_N50/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_discriminative_N1/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N5/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N10/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N20/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N30/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N40/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libri2mix/c_mar_oracle_N50/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div data-sample-section="Libri1Mix_test_1363-135842-0000" hidden>
+```
+
+## LibriDEMAND example 1
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_1363-135842-0000/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_1363-135842-0000/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_ar_N50/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N5/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N10/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N20/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N30/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N40/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N50/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N5/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N10/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N20/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N30/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N40/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N50/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N5/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N10/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N20/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N30/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N40/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N50/Libri1Mix_test_1363-135842-0000/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div data-sample-section="Libri1Mix_test_1898-145720-0018" hidden>
+```
+
+## LibriDEMAND example 2
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_1898-145720-0018/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_1898-145720-0018/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_ar_N50/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N5/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N10/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N20/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N30/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N40/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N50/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N5/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N10/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N20/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N30/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N40/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N50/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N5/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N10/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N20/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N30/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N40/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N50/Libri1Mix_test_1898-145720-0018/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div data-sample-section="Libri1Mix_test_441-130108-0041" hidden>
+```
+
+## LibriDEMAND example 3
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_441-130108-0041/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_441-130108-0041/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_ar_N50/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N5/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N10/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N20/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N30/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N40/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N50/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N5/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N10/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N20/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N30/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N40/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N50/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N5/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N10/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N20/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N30/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N40/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N50/Libri1Mix_test_441-130108-0041/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div data-sample-section="Libri1Mix_test_8238-283452-0035" hidden>
+```
+
+## LibriDEMAND example 4
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_8238-283452-0035/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_8238-283452-0035/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_ar_N50/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N5/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N10/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N20/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N30/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N40/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N50/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N5/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N10/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N20/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N30/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N40/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N50/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N5/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N10/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N20/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N30/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N40/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N50/Libri1Mix_test_8238-283452-0035/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div data-sample-section="Libri1Mix_test_3699-175950-0005" hidden>
+```
+
+## LibriDEMAND example 5
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_3699-175950-0005/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_3699-175950-0005/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_ar_N50/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N5/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N10/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N20/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N30/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N40/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N50/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N5/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N10/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N20/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N30/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N40/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N50/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N5/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N10/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N20/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N30/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N40/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N50/Libri1Mix_test_3699-175950-0005/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div data-sample-section="Libri1Mix_test_27-124992-0056" hidden>
+```
+
+## LibriDEMAND example 6
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_27-124992-0056/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_27-124992-0056/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_ar_N50/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N5/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N10/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N20/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N30/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N40/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N50/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N5/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N10/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N20/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N30/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N40/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N50/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N5/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N10/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N20/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N30/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N40/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N50/Libri1Mix_test_27-124992-0056/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div data-sample-section="Libri1Mix_test_229-130880-0014" hidden>
+```
+
+## LibriDEMAND example 7
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_229-130880-0014/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_229-130880-0014/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_ar_N50/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N5/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N10/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N20/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N30/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N40/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N50/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N5/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N10/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N20/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N30/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N40/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N50/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N5/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N10/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N20/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N30/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N40/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N50/Libri1Mix_test_229-130880-0014/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div data-sample-section="Libri1Mix_test_2952-410-0016" hidden>
+```
+
+## LibriDEMAND example 8
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_2952-410-0016/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_2952-410-0016/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_ar_N50/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N5/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N10/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N20/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N30/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N40/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N50/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N5/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N10/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N20/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N30/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N40/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N50/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N5/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N10/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N20/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N30/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N40/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N50/Libri1Mix_test_2952-410-0016/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div data-sample-section="Libri1Mix_test_6078-54013-0044" hidden>
+```
+
+## LibriDEMAND example 9
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_6078-54013-0044/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_6078-54013-0044/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_ar_N50/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N5/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N10/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N20/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N30/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N40/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N50/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N5/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N10/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N20/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N30/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N40/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N50/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N5/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N10/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N20/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N30/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N40/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N50/Libri1Mix_test_6078-54013-0044/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div data-sample-section="Libri1Mix_test_201-122255-0029" hidden>
+```
+
+## LibriDEMAND example 10
+
+| Noisy | Clean | C-NAR | C-AR |
+|----------|----------|----------|----------|
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_201-122255-0029/noisy.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_201-122255-0029/clean.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/cnar_N1/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_ar_N50/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> |
+
+| MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal | MARSE-causal |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N5/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N10/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N20/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N30/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N40/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_autoregressive_N50/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> |
+
+| MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random | MARSE-NC-random |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N5/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N10/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N20/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N30/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N40/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_random_N50/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> |
+
+| MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle | MARSE-NC-oracle |
+|----------|----------|----------|----------|----------|----------|----------|
+| N=1 | N=5 | N=10 | N=20 | N=30 | N=40 | N=50 |
+| <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_discriminative_N1/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N5/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N10/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N20/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N30/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N40/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> | <audio controls style="width: 100px;" src=resources/audio/libridemand/c_mar_oracle_N50/Libri1Mix_test_201-122255-0029/reconstructed.wav></audio> |
+
+```{=html}
+</div>
+```

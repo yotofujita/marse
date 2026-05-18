@@ -23,3 +23,5 @@ results/checkpoints/*
 .DS_Store
 .vscode/
 .idea/
+
+outputs

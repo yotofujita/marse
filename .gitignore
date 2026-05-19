@@ -25,3 +25,5 @@ results/checkpoints/*
 .idea/
 
 outputs
+.agents
+.codex

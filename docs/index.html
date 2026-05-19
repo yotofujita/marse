@@ -108,7 +108,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#method" id="toc-method" class="nav-link" data-scroll-target="#method">Method</a></li>
   <li><a href="#experiment" id="toc-experiment" class="nav-link" data-scroll-target="#experiment">Experiment</a>
   <ul class="collapse">
-  <li><a href="#audio-example" id="toc-audio-example" class="nav-link" data-scroll-target="#audio-example">Audio Example</a></li>
+  <li><a href="#audio-example" id="toc-audio-example" class="nav-link" data-scroll-target="#audio-example">Random Audio Examples</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -141,7 +141,7 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>DNSMOS OVRL score obtained by the proposed MARSE model (for the three decoding policies) and the C-AR and C-NAR baselines on a subset of 300 samples from Libri1Mix test, as a function of the number of decoding iterations.</figcaption>
 </figure>
 <section id="audio-example" class="level2">
-<h3>Audio Example</h3>
+<h3>Random Audio Examples</h3>
 <label for="dataset-select">Dataset</label>
 <select id="dataset-select">
   <option value="libri2mix">Libri1Mix</option>
@@ -179,26 +179,26 @@ const datasetSamples = {
   ]
 };
 const sampleLabels = {
-  "Libri2Mix_test_1089-134686-0007_7021-85628-0018": "Libri1Mix `test` example 1",
-  "Libri2Mix_test_1089-134691-0019_672-122797-0023": "Libri1Mix `test` example 2",
-  "Libri2Mix_test_1089-134686-0024_1995-1836-0013": "Libri1Mix `test` example 3",
-  "Libri2Mix_test_1089-134691-0014_7127-75947-0023": "Libri1Mix `test` example 4",
-  "Libri2Mix_test_1284-1180-0020_8555-284447-0005": "Libri1Mix `test` example 5",
-  "Libri2Mix_test_1221-135766-0003_1320-122617-0009": "Libri1Mix `test` example 6",
-  "Libri2Mix_test_1284-1180-0032_2830-3979-0003": "Libri1Mix `test` example 7",
-  "Libri2Mix_test_1284-1180-0005_6829-68771-0000": "Libri1Mix `test` example 8",
-  "Libri2Mix_test_1284-1180-0014_6829-68769-0006": "Libri1Mix `test` example 9",
-  "Libri2Mix_test_121-127105-0019_4446-2275-0029": "Libri1Mix `test` example 10",
-  "Libri1Mix_test_1363-135842-0000": "LibriDEMAND `test` example 1",
-  "Libri1Mix_test_1898-145720-0018": "LibriDEMAND `test` example 2",
-  "Libri1Mix_test_441-130108-0041": "LibriDEMAND `test` example 3",
-  "Libri1Mix_test_8238-283452-0035": "LibriDEMAND `test` example 4",
-  "Libri1Mix_test_3699-175950-0005": "LibriDEMAND `test` example 5",
-  "Libri1Mix_test_27-124992-0056": "LibriDEMAND `test` example 6",
-  "Libri1Mix_test_229-130880-0014": "LibriDEMAND `test` example 7",
-  "Libri1Mix_test_2952-410-0016": "LibriDEMAND `test` example 8",
-  "Libri1Mix_test_6078-54013-0044": "LibriDEMAND `test` example 9",
-  "Libri1Mix_test_201-122255-0029": "LibriDEMAND `test` example 10",
+  "Libri2Mix_test_1089-134686-0007_7021-85628-0018": "Libri2Mix example 1 (SNR: 10.13)",
+  "Libri2Mix_test_1089-134691-0019_672-122797-0023": "Libri2Mix example 2 (SNR: 5.12)",
+  "Libri2Mix_test_1089-134686-0024_1995-1836-0013": "Libri2Mix example 3 (SNR: 2.86)",
+  "Libri2Mix_test_1089-134691-0014_7127-75947-0023": "Libri2Mix example 4 (SNR: 0.53)",
+  "Libri2Mix_test_1284-1180-0020_8555-284447-0005": "Libri2Mix example 5 (SNR: 1.90)",
+  "Libri2Mix_test_1221-135766-0003_1320-122617-0009": "Libri2Mix example 6 (SNR: 7.63)",
+  "Libri2Mix_test_1284-1180-0032_2830-3979-0003": "Libri2Mix example 7 (SNR: 4.43)",
+  "Libri2Mix_test_1284-1180-0005_6829-68771-0000": "Libri2Mix example 8 (SNR: 5.01)",
+  "Libri2Mix_test_1284-1180-0014_6829-68769-0006": "Libri2Mix example 9 (SNR: 3.63)",
+  "Libri2Mix_test_121-127105-0019_4446-2275-0029": "Libri2Mix example 10 (SNR: 3.64)",
+  "Libri1Mix_test_1363-135842-0000": "LibriDEMAND example 1 (SNR: 7.30)",
+  "Libri1Mix_test_1898-145720-0018": "LibriDEMAND example 2 (SNR: -2.50)",
+  "Libri1Mix_test_441-130108-0041": "LibriDEMAND example 3 (SNR: -4.85)",
+  "Libri1Mix_test_8238-283452-0035": "LibriDEMAND example 4 (SNR: -1.82)",
+  "Libri1Mix_test_3699-175950-0005": "LibriDEMAND example 5 (SNR: -12.49)",
+  "Libri1Mix_test_27-124992-0056": "LibriDEMAND example 6 (SNR: -0.98)",
+  "Libri1Mix_test_229-130880-0014": "LibriDEMAND example 7 (SNR: -5.06)",
+  "Libri1Mix_test_2952-410-0016": "LibriDEMAND example 8 (SNR: -8.67)",
+  "Libri1Mix_test_6078-54013-0044": "LibriDEMAND example 9 (SNR: -6.81)",
+  "Libri1Mix_test_201-122255-0029": "LibriDEMAND example 10 (SNR: 0.55)",
 };
 const datasetSelect = document.getElementById("dataset-select");
 const sampleSelect = document.getElementById("sample-select");
@@ -325,7 +325,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 <section id="libri2mix-example-1" class="level2">
-<h4 class="anchored" data-anchor-id="libri2mix-example-1">Libri2Mix example 1</h4>
+<h4 class="anchored" data-anchor-id="libri2mix-example-1">Libri2Mix example 1 (SNR: 10.13)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -478,7 +478,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </table>
 </section>
 <section id="libri2mix-example-2" class="level2">
-<h4 class="anchored" data-anchor-id="libri2mix-example-2">Libri2Mix example 2</h4>
+<h4 class="anchored" data-anchor-id="libri2mix-example-2">Libri2Mix example 2 (SNR: 5.12)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -632,7 +632,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </section>
 
 <section id="libri2mix-example-3" class="level2">
-<h4 data-anchor-id="libri2mix-example-3">Libri2Mix example 3</h4>
+<h4 data-anchor-id="libri2mix-example-3">Libri2Mix example 3 (SNR: 2.86)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -786,7 +786,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </section>
 
 <section id="libri2mix-example-4" class="level2">
-<h4 data-anchor-id="libri2mix-example-4">Libri2Mix example 4</h4>
+<h4 data-anchor-id="libri2mix-example-4">Libri2Mix example 4 (SNR: 0.53)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -940,7 +940,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </section>
 
 <section id="libri2mix-example-5" class="level2">
-<h4 data-anchor-id="libri2mix-example-5">Libri2Mix example 5</h4>
+<h4 data-anchor-id="libri2mix-example-5">Libri2Mix example 5 (SNR: 1.90)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -1094,7 +1094,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </section>
 
 <section id="libri2mix-example-6" class="level2">
-<h4 data-anchor-id="libri2mix-example-6">Libri2Mix example 6</h4>
+<h4 data-anchor-id="libri2mix-example-6">Libri2Mix example 6 (SNR: 7.63)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -1248,7 +1248,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </section>
 
 <section id="libri2mix-example-7" class="level2">
-<h4 data-anchor-id="libri2mix-example-7">Libri2Mix example 7</h4>
+<h4 data-anchor-id="libri2mix-example-7">Libri2Mix example 7 (SNR: 4.43)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -1402,7 +1402,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </section>
 
 <section id="libri2mix-example-8" class="level2">
-<h4 data-anchor-id="libri2mix-example-8">Libri2Mix example 8</h4>
+<h4 data-anchor-id="libri2mix-example-8">Libri2Mix example 8 (SNR: 5.01)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -1556,7 +1556,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </section>
 
 <section id="libri2mix-example-9" class="level2">
-<h4 data-anchor-id="libri2mix-example-9">Libri2Mix example 9</h4>
+<h4 data-anchor-id="libri2mix-example-9">Libri2Mix example 9 (SNR: 3.63)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -1710,7 +1710,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </section>
 
 <section id="libri2mix-example-10" class="level2">
-<h4 data-anchor-id="libri2mix-example-10">Libri2Mix example 10</h4>
+<h4 data-anchor-id="libri2mix-example-10">Libri2Mix example 10 (SNR: 3.64)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -1864,7 +1864,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </section>
 
 <section id="libridemand-example-1" class="level2">
-<h4 data-anchor-id="libridemand-example-1">LibriDEMAND example 1</h4>
+<h4 data-anchor-id="libridemand-example-1">LibriDEMAND example 1 (SNR: 7.30)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -2018,7 +2018,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </section>
 
 <section id="libridemand-example-2" class="level2">
-<h4 data-anchor-id="libridemand-example-2">LibriDEMAND example 2</h4>
+<h4 data-anchor-id="libridemand-example-2">LibriDEMAND example 2 (SNR: -2.50)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -2172,7 +2172,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </section>
 
 <section id="libridemand-example-3" class="level2">
-<h4 data-anchor-id="libridemand-example-3">LibriDEMAND example 3</h4>
+<h4 data-anchor-id="libridemand-example-3">LibriDEMAND example 3 (SNR: -4.85)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -2326,7 +2326,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </section>
 
 <section id="libridemand-example-4" class="level2">
-<h4 data-anchor-id="libridemand-example-4">LibriDEMAND example 4</h4>
+<h4 data-anchor-id="libridemand-example-4">LibriDEMAND example 4 (SNR: -1.82)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -2480,7 +2480,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </section>
 
 <section id="libridemand-example-5" class="level2">
-<h4 data-anchor-id="libridemand-example-5">LibriDEMAND example 5</h4>
+<h4 data-anchor-id="libridemand-example-5">LibriDEMAND example 5 (SNR: -12.49)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -2634,7 +2634,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </section>
 
 <section id="libridemand-example-6" class="level2">
-<h4 data-anchor-id="libridemand-example-6">LibriDEMAND example 6</h4>
+<h4 data-anchor-id="libridemand-example-6">LibriDEMAND example 6 (SNR: -0.98)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -2788,7 +2788,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </section>
 
 <section id="libridemand-example-7" class="level2">
-<h4 data-anchor-id="libridemand-example-7">LibriDEMAND example 7</h4>
+<h4 data-anchor-id="libridemand-example-7">LibriDEMAND example 7 (SNR: -5.06)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -2942,7 +2942,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </section>
 
 <section id="libridemand-example-8" class="level2">
-<h4 data-anchor-id="libridemand-example-8">LibriDEMAND example 8</h4>
+<h4 data-anchor-id="libridemand-example-8">LibriDEMAND example 8 (SNR: -8.67)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -3096,7 +3096,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </section>
 
 <section id="libridemand-example-9" class="level2">
-<h4 data-anchor-id="libridemand-example-9">LibriDEMAND example 9</h4>
+<h4 data-anchor-id="libridemand-example-9">LibriDEMAND example 9 (SNR: -6.81)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -3250,7 +3250,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </section>
 
 <section id="libridemand-example-10" class="level2">
-<h4 data-anchor-id="libridemand-example-10">LibriDEMAND example 10</h4>
+<h4 data-anchor-id="libridemand-example-10">LibriDEMAND example 10 (SNR: 0.55)</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">

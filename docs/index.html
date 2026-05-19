@@ -108,29 +108,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#method" id="toc-method" class="nav-link" data-scroll-target="#method">Method</a></li>
   <li><a href="#experiment" id="toc-experiment" class="nav-link" data-scroll-target="#experiment">Experiment</a>
   <ul class="collapse">
-  <li><a href="#audio-example" id="toc-audio-example" class="nav-link" data-scroll-target="#audio-example">Audio Example</a>
-  <ul class="collapse">
-  <li><a href="#libri2mix-example-1" id="toc-libri2mix-example-1" class="nav-link" data-scroll-target="#libri2mix-example-1">Libri2Mix example 1</a></li>
-  <li><a href="#libri2mix-example-2" id="toc-libri2mix-example-2" class="nav-link" data-scroll-target="#libri2mix-example-2">Libri2Mix example 2</a></li>
-  <li><a href="#libri2mix-example-3" id="toc-libri2mix-example-3" class="nav-link" data-scroll-target="#libri2mix-example-3">Libri2Mix example 3</a></li>
-  <li><a href="#libri2mix-example-4" id="toc-libri2mix-example-4" class="nav-link" data-scroll-target="#libri2mix-example-4">Libri2Mix example 4</a></li>
-  <li><a href="#libri2mix-example-5" id="toc-libri2mix-example-5" class="nav-link" data-scroll-target="#libri2mix-example-5">Libri2Mix example 5</a></li>
-  <li><a href="#libri2mix-example-6" id="toc-libri2mix-example-6" class="nav-link" data-scroll-target="#libri2mix-example-6">Libri2Mix example 6</a></li>
-  <li><a href="#libri2mix-example-7" id="toc-libri2mix-example-7" class="nav-link" data-scroll-target="#libri2mix-example-7">Libri2Mix example 7</a></li>
-  <li><a href="#libri2mix-example-8" id="toc-libri2mix-example-8" class="nav-link" data-scroll-target="#libri2mix-example-8">Libri2Mix example 8</a></li>
-  <li><a href="#libri2mix-example-9" id="toc-libri2mix-example-9" class="nav-link" data-scroll-target="#libri2mix-example-9">Libri2Mix example 9</a></li>
-  <li><a href="#libri2mix-example-10" id="toc-libri2mix-example-10" class="nav-link" data-scroll-target="#libri2mix-example-10">Libri2Mix example 10</a></li>
-  <li><a href="#libridemand-example-1" id="toc-libridemand-example-1" class="nav-link" data-scroll-target="#libridemand-example-1">LibriDEMAND example 1</a></li>
-  <li><a href="#libridemand-example-2" id="toc-libridemand-example-2" class="nav-link" data-scroll-target="#libridemand-example-2">LibriDEMAND example 2</a></li>
-  <li><a href="#libridemand-example-3" id="toc-libridemand-example-3" class="nav-link" data-scroll-target="#libridemand-example-3">LibriDEMAND example 3</a></li>
-  <li><a href="#libridemand-example-4" id="toc-libridemand-example-4" class="nav-link" data-scroll-target="#libridemand-example-4">LibriDEMAND example 4</a></li>
-  <li><a href="#libridemand-example-5" id="toc-libridemand-example-5" class="nav-link" data-scroll-target="#libridemand-example-5">LibriDEMAND example 5</a></li>
-  <li><a href="#libridemand-example-6" id="toc-libridemand-example-6" class="nav-link" data-scroll-target="#libridemand-example-6">LibriDEMAND example 6</a></li>
-  <li><a href="#libridemand-example-7" id="toc-libridemand-example-7" class="nav-link" data-scroll-target="#libridemand-example-7">LibriDEMAND example 7</a></li>
-  <li><a href="#libridemand-example-8" id="toc-libridemand-example-8" class="nav-link" data-scroll-target="#libridemand-example-8">LibriDEMAND example 8</a></li>
-  <li><a href="#libridemand-example-9" id="toc-libridemand-example-9" class="nav-link" data-scroll-target="#libridemand-example-9">LibriDEMAND example 9</a></li>
-  <li><a href="#libridemand-example-10" id="toc-libridemand-example-10" class="nav-link" data-scroll-target="#libridemand-example-10">LibriDEMAND example 10</a></li>
-  </ul></li>
+  <li><a href="#audio-example" id="toc-audio-example" class="nav-link" data-scroll-target="#audio-example">Audio Example</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -332,9 +310,15 @@ function updateSections() {
     section.hidden = section.dataset.sampleSection !== selected;
   });
 }
+function pruneTocSampleEntries() {
+  document.querySelectorAll('#TOC a[data-scroll-target^="#libri2mix-example-"], #TOC a[data-scroll-target^="#libridemand-example-"]').forEach((link) => {
+    link.closest("li")?.remove();
+  });
+}
 datasetSelect.addEventListener("change", updateSamples);
 sampleSelect.addEventListener("change", updateSections);
 window.addEventListener("DOMContentLoaded", () => {
+  pruneTocSampleEntries();
   normalizeSampleTables();
   initializeSections();
   updateSamples();

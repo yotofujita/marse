@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-REPO_ROOT="${REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)}"
+REPO_ROOT="${REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 cd "$REPO_ROOT"
 
 CONDA_ENV_NAME="${CONDA_ENV_NAME:-sse}"
@@ -16,8 +16,6 @@ if [ ! -x "$CONDA_ENV_PATH/bin/python" ]; then
   echo "Expected python at $CONDA_ENV_PATH/bin/python" >&2
   exit 1
 fi
-
-NPROC_PER_NODE="${NPROC_PER_NODE:-$(nvidia-smi --list-gpus | wc -l)}"
 
 # Select project, model, and dataset
 DEBUG=${DEBUG:-false}
@@ -41,11 +39,17 @@ SCRIPT="train.py \
  --config-name $PROJECT \
  model_name=$MODEL model=$MODEL \
  dataset_name=$DATASET dataset=$DATASET \
- train.num_epochs=$N_EPOCHS"
+ mini=true \
+ comet_logging=false \
+ train.num_epochs=$N_EPOCHS \
+ train.batch_size=4 \
+ +train.mini_num_samples=4 \
+ train.num_workers=0 \
+ train.save_every=$N_EPOCHS \
+ train.gen_every=$N_EPOCHS \
+ train.weight_decay=0.0 \
+ train.use_bfloat16=false \
+ train.compile_model=false"
+python $SCRIPT
 
-torchrun \
-  --nproc_per_node=${NPROC_PER_NODE} \
-  --master_port=29500 \
-  $SCRIPT
-
-echo "Training completed!" 
+echo "Training completed!"

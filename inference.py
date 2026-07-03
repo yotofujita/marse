@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Inference-only test script compatible with test.sh metric pipeline."""
+"""Inference-only test script compatible with scripts/test.sh metric pipeline."""
 
 import argparse
 import os

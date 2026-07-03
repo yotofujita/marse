@@ -69,8 +69,8 @@ datasets/
 Training and evaluation environments are split because evaluation installs ASR and metric dependencies.
 
 ```bash
-./install_train.sh
-./install_eval.sh
+./scripts/install_train.sh
+./scripts/install_eval.sh
 ```
 
 ## Training
@@ -91,9 +91,9 @@ python train.py model=c_ar model_name=c_ar dataset=labeled_libri_mix dataset_nam
 The local wrapper uses the same config names:
 
 ```bash
-MODEL=marse DATASET=labeled_libri_mix ./train.sh
-MODEL=c_nar DATASET=labeled_libri_mix ./train.sh
-MODEL=c_ar DATASET=labeled_libri_mix ./train.sh
+MODEL=marse DATASET=labeled_libri_mix ./scripts/train.sh
+MODEL=c_nar DATASET=labeled_libri_mix ./scripts/train.sh
+MODEL=c_ar DATASET=labeled_libri_mix ./scripts/train.sh
 ```
 
 Outputs are written under:
@@ -111,22 +111,22 @@ export EXPDIR=../outputs/mgse/labeled_libri_mix/marse/<timestamp>
 export CKPT=$EXPDIR/checkpoints/300ep.pt
 
 # In-domain Libri1Mix
-EXPNAME=libri1mix_marse_random DECODING_POLICY=random N_ITERS="10" DATASET_CFGPATH=configs/dataset/labeled_libri_mix.yaml bash test.sh
-EXPNAME=libri1mix_marse_causal DECODING_POLICY=causal N_ITERS="10" DATASET_CFGPATH=configs/dataset/labeled_libri_mix.yaml bash test.sh
-EXPNAME=libri1mix_marse_oracle DECODING_POLICY=oracle N_ITERS="10" DATASET_CFGPATH=configs/dataset/labeled_libri_mix.yaml bash test.sh
+EXPNAME=libri1mix_marse_random DECODING_POLICY=random N_ITERS="10" DATASET_CFGPATH=configs/dataset/labeled_libri_mix.yaml bash scripts/test.sh
+EXPNAME=libri1mix_marse_causal DECODING_POLICY=causal N_ITERS="10" DATASET_CFGPATH=configs/dataset/labeled_libri_mix.yaml bash scripts/test.sh
+EXPNAME=libri1mix_marse_oracle DECODING_POLICY=oracle N_ITERS="10" DATASET_CFGPATH=configs/dataset/labeled_libri_mix.yaml bash scripts/test.sh
 
 # Out-of-domain LibriDEMAND
-EXPNAME=demand_marse_random DECODING_POLICY=random N_ITERS="10" DATASET_CFGPATH=configs/dataset/labeled_libri_mix_demand.yaml bash test.sh
-EXPNAME=demand_marse_causal DECODING_POLICY=causal N_ITERS="10" DATASET_CFGPATH=configs/dataset/labeled_libri_mix_demand.yaml bash test.sh
-EXPNAME=demand_marse_oracle DECODING_POLICY=oracle N_ITERS="10" DATASET_CFGPATH=configs/dataset/labeled_libri_mix_demand.yaml bash test.sh
+EXPNAME=demand_marse_random DECODING_POLICY=random N_ITERS="10" DATASET_CFGPATH=configs/dataset/labeled_libri_mix_demand.yaml bash scripts/test.sh
+EXPNAME=demand_marse_causal DECODING_POLICY=causal N_ITERS="10" DATASET_CFGPATH=configs/dataset/labeled_libri_mix_demand.yaml bash scripts/test.sh
+EXPNAME=demand_marse_oracle DECODING_POLICY=oracle N_ITERS="10" DATASET_CFGPATH=configs/dataset/labeled_libri_mix_demand.yaml bash scripts/test.sh
 ```
 
 For Fig. 2 style iteration sweeps:
 
 ```bash
-EXPNAME=libri1mix_marse_random DECODING_POLICY=random N_ITERS="1 5 10 20 30 40 50" DATASET_CFGPATH=configs/dataset/labeled_libri_mix.yaml bash test.sh
-EXPNAME=libri1mix_marse_causal DECODING_POLICY=causal N_ITERS="1 5 10 20 30 40 50" DATASET_CFGPATH=configs/dataset/labeled_libri_mix.yaml bash test.sh
-EXPNAME=libri1mix_marse_oracle DECODING_POLICY=oracle N_ITERS="1 5 10 20 30 40 50" DATASET_CFGPATH=configs/dataset/labeled_libri_mix.yaml bash test.sh
+EXPNAME=libri1mix_marse_random DECODING_POLICY=random N_ITERS="1 5 10 20 30 40 50" DATASET_CFGPATH=configs/dataset/labeled_libri_mix.yaml bash scripts/test.sh
+EXPNAME=libri1mix_marse_causal DECODING_POLICY=causal N_ITERS="1 5 10 20 30 40 50" DATASET_CFGPATH=configs/dataset/labeled_libri_mix.yaml bash scripts/test.sh
+EXPNAME=libri1mix_marse_oracle DECODING_POLICY=oracle N_ITERS="1 5 10 20 30 40 50" DATASET_CFGPATH=configs/dataset/labeled_libri_mix.yaml bash scripts/test.sh
 ```
 
 For C-NAR and C-AR, set `EXPDIR` and `CKPT` to the corresponding run directory and use `N_ITERS="1"`. Extra MARSE policy settings are ignored by `inference.py` for these models.

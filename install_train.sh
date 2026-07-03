@@ -2,27 +2,15 @@
 
 set -euo pipefail
 
-# Load cluster modules when available.
-if command -v module &> /dev/null; then
-  module purge
-  module load miniconda3/25.5.1/none-none
-fi
-
 gpu_name="$(nvidia-smi --query-gpu=name --format=csv,noheader | head -n 1)"
 conda_env_name="sse"
 torch_index_url="https://download.pytorch.org/whl/cu130"
 
 if [[ "$gpu_name" == *"A100"* ]]; then
   conda_env_name="sse-A100"
-  if command -v module &> /dev/null; then
-    module load cuda/13.0.2/none-none
-  fi
 elif [[ "$gpu_name" == *"V100"* ]]; then
   conda_env_name="sse-V100"
   torch_index_url="https://download.pytorch.org/whl/cu128"
-  if command -v module &> /dev/null; then
-    module load cuda/12.8.1/none-none
-  fi
 fi
 
 echo "gpu name: ${gpu_name}"

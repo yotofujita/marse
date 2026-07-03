@@ -1,13 +1,13 @@
 # MASKED AUTOREGRESSIVE SPEECH ENHANCEMENT
 
-This repository contains the training, inference, and evaluation code used to reproduce the experiments described in `docs/iwaenc2026_paper.md`.
+This repository contains the training, inference, and evaluation code used to reproduce the MARSE, C-NAR, and C-AR experiments described in `docs/iwaenc2026_paper.md`.
 
 ## Scope
 
 The reproduction trains three neural audio codec based speech enhancement models:
 
-- `c_nar`: C-NAR baseline, all-at-once noisy-to-clean mapping.
-- `c_ar`: C-AR baseline, frame-wise causal autoregressive decoding.
+- `c_nar`: C-NAR model, all-at-once noisy-to-clean mapping.
+- `c_ar`: C-AR model, frame-wise causal autoregressive decoding.
 - `marse`: MARSE/MGSE model, trained once with random masking and evaluated with different decoding policies.
 
 For MARSE, the training objective is shared across all policies. At inference time, set:
@@ -20,7 +20,35 @@ For MARSE, the training objective is shared across all policies. At inference ti
 
 The configs assume `<storage_dir>=./datasets`.
 
-Prepare the datasets with the external `../LibriMix` and `../Libri1MixDEMAND` generators so that the following directories exist:
+Dataset generation repositories are included as Git submodules:
+
+```bash
+git submodule update --init --recursive
+```
+
+Generate Libri1Mix-compatible in-domain data with the LibriMix generator:
+
+```bash
+mkdir -p datasets
+cd external/LibriMix
+./generate_librimix.sh ../../datasets
+cd ../..
+ln -sfnT Libri2Mix datasets/LibriMix
+```
+
+The upstream LibriMix script generates several variants by default. To save disk space, edit `external/LibriMix/generate_librimix.sh` before running it and keep only `n_src=2`, `freqs=16k`, `modes=min`, and `types=mix_single`.
+
+Generate out-of-domain LibriDEMAND data with the Libri1MixDEMAND generator. Place DEMAND first under `datasets/DEMAND/<noise_type>/ch01.wav`, then run:
+
+```bash
+cd external/Libri1MixDEMAND
+pip install -r requirements.txt
+./generate_libri1mix_demand.sh ../../datasets
+cd ../..
+ln -sfnT Libri1MixDemand datasets/Libri1MixDEMAND
+```
+
+After generation, the following directories should exist:
 
 ```text
 datasets/
@@ -45,12 +73,6 @@ Training and evaluation environments are split because evaluation installs ASR a
 ./install_eval.sh
 ```
 
-Baseline evaluation scripts for ConvTasNet/DPTNet are kept separately:
-
-```bash
-./install_eval_baselines.sh
-```
-
 ## Training
 
 The default Hydra config is `configs/mgse.yaml`.
@@ -66,7 +88,7 @@ python train.py model=c_nar model_name=c_nar dataset=labeled_libri_mix dataset_n
 python train.py model=c_ar model_name=c_ar dataset=labeled_libri_mix dataset_name=labeled_libri_mix
 ```
 
-The Slurm/local wrapper uses the same config names:
+The local wrapper uses the same config names:
 
 ```bash
 MODEL=marse DATASET=labeled_libri_mix ./train.sh

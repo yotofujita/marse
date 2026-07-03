@@ -1,24 +1,8 @@
 #!/bin/bash
-#SBATCH --partition=gpu
-#SBATCH --nodes=1
-#SBATCH --cpus-per-task=20
-#SBATCH --gres=gpu:1
-#SBATCH --time=24:00:00
+set -euo pipefail
 
-# Module load
-if command -v module &> /dev/null; then
-  module load gcc/15.1.0/gcc-15.1.0
-  module load miniconda3/25.5.1/none-none
-  cd /gpfs/workdir/fujitayo/semi-supervisedSE
-else
-  REPO_ROOT="${REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)}"
-  cd "$REPO_ROOT"
-fi
-
-# Get conda environment path
-if [ -z "$HOME" ]; then
-  HOME=~
-fi
+REPO_ROOT="${REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)}"
+cd "$REPO_ROOT"
 
 if [ -d "$HOME/miniconda3/envs/sseeval" ]; then
   CONDA_ENV_PATH="$HOME/miniconda3/envs/sseeval"
@@ -50,8 +34,7 @@ for i in $N_ITERS; do
     --exp_name $exp_name_i \
     --dataset_cfg_path $DATASET_CFGPATH \
     --num_steps $i \
-    --decoding_policy ${DECODING_POLICY:-random} \
-    --max_eval_samples 300
+    --decoding_policy ${DECODING_POLICY:-random}
 
   python utils/dnsmos.py --test_exp_dir $EXPDIR/$exp_name_i --cfg_path $config_path_i
   python utils/cossim.py --test_exp_dir $EXPDIR/$exp_name_i --cfg_path $config_path_i

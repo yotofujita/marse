@@ -1,16 +1,8 @@
 #!/bin/bash
 
-# Activate conda on Ruche
-if command -v module &> /dev/null; then
-  module load gcc/13.2.0/gcc-4.8.5
-  module load miniconda3/4.10.3/gcc-13.2.0
-  export CC=gcc
-  export CXX=g++
-  export CMAKE_C_COMPILER=$(which gcc)
-  export CMAKE_CXX_COMPILER=$(which g++)
-fi
+set -euo pipefail
 
-if conda env list | grep -qE '^\s*sse\s'; then
+if conda env list | grep -qE '^\s*sseeval\s'; then
   conda remove -yn sseeval --all
 fi
 

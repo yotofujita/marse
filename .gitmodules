@@ -1,0 +1,6 @@
+[submodule "external/LibriMix"]
+	path = external/LibriMix
+	url = https://github.com/JorisCos/LibriMix
+[submodule "external/Libri1MixDEMAND"]
+	path = external/Libri1MixDEMAND
+	url = https://github.com/yotofujita/Libri1MixDEMAND

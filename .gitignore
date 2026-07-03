@@ -7,6 +7,7 @@ __pycache__/
 .pytest_cache/
 
 # Data and models
+datasets/
 data/raw/*
 data/processed/*
 results/checkpoints/*

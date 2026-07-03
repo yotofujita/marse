@@ -140,5 +140,3 @@ Each evaluation directory contains per-sample audio, per-sample `metrics.csv`, a
 ## License
 
 This repository is released under the MIT License. See `LICENSE`.
-
-Dataset generators, generated datasets, pretrained models, and documentation site assets may have separate terms. See `THIRD_PARTY_NOTICES.md` and the linked upstream projects.

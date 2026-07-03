@@ -1,84 +1,112 @@
-# Audio/ML Research Repository Template
+# MARSE IWAENC 2026 Reproduction
 
-音響信号処理・機械学習研究のための公開リポジトリテンプレートです。論文・実験コード・結果・デモページを同じリポジトリで管理し、`docs/` を GitHub Pages として公開する構成を想定しています。
+This repository contains the training, inference, and evaluation code used to reproduce the experiments described in `docs/iwaenc2026_paper.md`.
 
-## Repository Structure
+## Scope
+
+The reproduction trains three neural audio codec based speech enhancement models:
+
+- `c_nar`: C-NAR baseline, all-at-once noisy-to-clean mapping.
+- `c_ar`: C-AR baseline, frame-wise causal autoregressive decoding.
+- `marse`: MARSE/MGSE model, trained once with random masking and evaluated with different decoding policies.
+
+For MARSE, the training objective is shared across all policies. At inference time, set:
+
+- `decoding_policy=random` for `MARSE-NC-random`.
+- `decoding_policy=causal` for `MARSE-causal`.
+- `decoding_policy=oracle` for `MARSE-NC-oracle`.
+
+## Data Layout
+
+The configs assume `<storage_dir>=./datasets`.
+
+Prepare the datasets with the external `../LibriMix` and `../Libri1MixDEMAND` generators so that the following directories exist:
 
 ```text
-.
-├── README.md
-├── LICENSE
-├── CITATION.cff
-├── pyproject.toml
-├── requirements.txt
-├── .gitignore
-├── configs/                 # 実験設定 YAML
-├── data/                    # 原則として Git 管理しない
-│   ├── raw/
-│   └── processed/
-├── src/audio_ml_project/    # Python パッケージ本体
-├── scripts/                 # 実行用スクリプト
-├── notebooks/               # 探索・可視化用 notebook
-├── tests/                   # 最小テスト
-├── results/                 # 図表・モデル出力
-├── examples/                # 小さいサンプル
-└── docs/                    # GitHub Pages 用デモページ
+datasets/
+  LibriMix/
+    wav16k/min/train-360/{mix_single,s1}/
+    wav16k/min/dev/{mix_single,s1}/
+    wav16k/min/test/{mix_single,s1}/
+  Libri1MixDEMAND/
+    wav16k/min/train-100/{mix_single,s1}/
+    wav16k/min/dev/{mix_single,s1}/
+    wav16k/min/test/{mix_single,s1}/
 ```
 
-## Recommended Demo Policy
+`LibriMix` is used for in-domain Libri1Mix training, validation, and testing. `Libri1MixDEMAND` is used for out-of-domain LibriDEMAND evaluation.
 
-このテンプレートでは、デモページを **同じリポジトリの `docs/` に含める方式** を採用しています。
+## Installation
 
-理由:
-
-- 研究コード・README・図表・デモを一元管理できる
-- GitHub Pages の設定が簡単
-- 小〜中規模の研究プロジェクトでは最も一般的で運用しやすい
-- 論文提出・ポートフォリオ公開・卒論発表ページに使いやすい
-
-大規模な Web アプリ、バックエンド API、GPU 推論サーバーが必要な場合のみ、デモを別リポジトリに分けるのがおすすめです。
-
-## Quick Start
+Training and evaluation environments are split because evaluation installs ASR and metric dependencies.
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-pip install -e .
+./install_train.sh
+./install_eval.sh
 ```
 
-サンプル実験:
+Baseline evaluation scripts for ConvTasNet/DPTNet are kept separately:
 
 ```bash
-python scripts/run_experiment.py --config configs/baseline.yaml
+./install_eval_baselines.sh
 ```
 
-デモページ確認:
+## Training
+
+The default Hydra config is `configs/mgse.yaml`.
 
 ```bash
-python -m http.server 8000 --directory docs
+# MARSE / MGSE
+python train.py model=marse model_name=marse dataset=labeled_libri_mix dataset_name=labeled_libri_mix
+
+# C-NAR
+python train.py model=c_nar model_name=c_nar dataset=labeled_libri_mix dataset_name=labeled_libri_mix
+
+# C-AR
+python train.py model=c_ar model_name=c_ar dataset=labeled_libri_mix dataset_name=labeled_libri_mix
 ```
 
-ブラウザで `http://localhost:8000` を開きます。
+The Slurm/local wrapper uses the same config names:
 
-## Research Overview
+```bash
+MODEL=marse DATASET=labeled_libri_mix ./train.sh
+MODEL=c_nar DATASET=labeled_libri_mix ./train.sh
+MODEL=c_ar DATASET=labeled_libri_mix ./train.sh
+```
 
-- Task: Audio classification / enhancement / event detection / representation learning
-- Input: WAV, MP3, spectrogram, mel-spectrogram, MFCC, embeddings
-- Model: CNN / CRNN / Transformer / classical ML baseline
-- Metrics: Accuracy, F1, AUC, SNR, PESQ, STOI, inference time
+Outputs are written under:
 
-## Reproducibility Checklist
+```text
+../outputs/mgse/<dataset_name>/<model_name>/<timestamp>/
+```
 
-- [ ] データセット名・取得方法を記載
-- [ ] 前処理条件を記載
-- [ ] 学習条件を `configs/` に保存
-- [ ] 乱数 seed を固定
-- [ ] 評価指標を明記
-- [ ] 図表の生成コードを保存
-- [ ] モデル重みの公開可否を明記
-- [ ] ライセンスを明記
+## Inference And Evaluation
 
-## Citation
+For MARSE Table 1 with 10 decoding steps:
 
-このリポジトリを使う場合は `CITATION.cff` を編集してください。
+```bash
+export EXPDIR=../outputs/mgse/labeled_libri_mix/marse/<timestamp>
+export CKPT=$EXPDIR/checkpoints/300ep.pt
+
+# In-domain Libri1Mix
+EXPNAME=libri1mix_marse_random DECODING_POLICY=random N_ITERS="10" DATASET_CFGPATH=configs/dataset/labeled_libri_mix.yaml bash test.sh
+EXPNAME=libri1mix_marse_causal DECODING_POLICY=causal N_ITERS="10" DATASET_CFGPATH=configs/dataset/labeled_libri_mix.yaml bash test.sh
+EXPNAME=libri1mix_marse_oracle DECODING_POLICY=oracle N_ITERS="10" DATASET_CFGPATH=configs/dataset/labeled_libri_mix.yaml bash test.sh
+
+# Out-of-domain LibriDEMAND
+EXPNAME=demand_marse_random DECODING_POLICY=random N_ITERS="10" DATASET_CFGPATH=configs/dataset/labeled_libri_mix_demand.yaml bash test.sh
+EXPNAME=demand_marse_causal DECODING_POLICY=causal N_ITERS="10" DATASET_CFGPATH=configs/dataset/labeled_libri_mix_demand.yaml bash test.sh
+EXPNAME=demand_marse_oracle DECODING_POLICY=oracle N_ITERS="10" DATASET_CFGPATH=configs/dataset/labeled_libri_mix_demand.yaml bash test.sh
+```
+
+For Fig. 2 style iteration sweeps:
+
+```bash
+EXPNAME=libri1mix_marse_random DECODING_POLICY=random N_ITERS="1 5 10 20 30 40 50" DATASET_CFGPATH=configs/dataset/labeled_libri_mix.yaml bash test.sh
+EXPNAME=libri1mix_marse_causal DECODING_POLICY=causal N_ITERS="1 5 10 20 30 40 50" DATASET_CFGPATH=configs/dataset/labeled_libri_mix.yaml bash test.sh
+EXPNAME=libri1mix_marse_oracle DECODING_POLICY=oracle N_ITERS="1 5 10 20 30 40 50" DATASET_CFGPATH=configs/dataset/labeled_libri_mix.yaml bash test.sh
+```
+
+For C-NAR and C-AR, set `EXPDIR` and `CKPT` to the corresponding run directory and use `N_ITERS="1"`. Extra MARSE policy settings are ignored by `inference.py` for these models.
+
+Each evaluation directory contains per-sample audio, per-sample `metrics.csv`, and aggregate `results.csv`.

@@ -1,0 +1,42 @@
+project_name: mgse
+model_name: marse
+dataset_name: labeled_libri_mix
+
+mini: false
+comet_logging: true
+
+defaults:
+  - model: marse
+  - dataset: labeled_libri_mix
+
+train:
+  checkpoint_path: null
+  seed: 12
+  num_epochs: 300
+  batch_size: 128
+  gradient_accumulation_steps: 1
+  learning_rate_base: 1e-3
+  save_every: 50
+  gen_every: 50
+  warmup_epochs: 10
+  weight_decay: 0.05
+  num_workers: 5
+  use_bfloat16: false  # Whether to enable bfloat16 mixed precision training
+  grad_clip_norm: 1.0
+  channels_last: true
+  compile_model: false
+
+distributed:
+  master_addr: localhost
+  master_port: 29500 
+
+paths:
+  checkpoint_dir: checkpoints
+  audio_output_dir: audiosamples
+
+# Hydra configuration
+hydra:
+  job:
+    chdir: false
+  run:
+    dir: ../outputs/${project_name}/${dataset_name}/${model_name}/${now:%Y-%m-%d_%H-%M-%S}

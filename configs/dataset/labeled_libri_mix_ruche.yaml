@@ -1,0 +1,30 @@
+# @package _global_
+dataset_root: ./datasets/LibriMix
+seq_len: 16000
+
+train_dataset:
+  _target_: models.modules.datasets.LabeledSingleChannelSEDataset
+  labeled_data_dirs:
+    - noisy_dir: ${dataset_root}/wav16k/min/train-360/mix_single
+      clean_dir: ${dataset_root}/wav16k/min/train-360/s1
+      name: Libri1Mix_train-360
+  seq_len: ${seq_len}
+  random_start: true
+
+val_dataset:
+  _target_: models.modules.datasets.LabeledSingleChannelSEDataset
+  labeled_data_dirs:
+    - noisy_dir: ${dataset_root}/wav16k/min/dev/mix_single
+      clean_dir: ${dataset_root}/wav16k/min/dev/s1
+      name: Libri1Mix_dev
+  seq_len: ${seq_len}
+  random_start: false
+
+test_dataset:
+  _target_: models.modules.datasets.LabeledSingleChannelSEDataset
+  labeled_data_dirs:
+    - noisy_dir: ${dataset_root}/wav16k/min/test/mix_single
+      clean_dir: ${dataset_root}/wav16k/min/test/s1
+      name: Libri1Mix_test
+  seq_len: ${seq_len}
+  random_start: false

@@ -1,4 +1,4 @@
-# MARSE IWAENC 2026 Reproduction
+# MASKED AUTOREGRESSIVE SPEECH ENHANCEMENT
 
 This repository contains the training, inference, and evaluation code used to reproduce the experiments described in `docs/iwaenc2026_paper.md`.
 

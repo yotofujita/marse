@@ -1,6 +1,6 @@
 # MASKED AUTOREGRESSIVE SPEECH ENHANCEMENT
 
-This repository contains the training, inference, and evaluation code used to reproduce the MARSE, C-NAR, and C-AR experiments described in `docs/iwaenc2026_paper.md`.
+This repository contains the training, inference, and evaluation code used to reproduce the MARSE, C-NAR, and C-AR speech enhancement experiments.
 
 ## Scope
 
@@ -132,3 +132,13 @@ EXPNAME=libri1mix_marse_oracle DECODING_POLICY=oracle N_ITERS="1 5 10 20 30 40 5
 For C-NAR and C-AR, set `EXPDIR` and `CKPT` to the corresponding run directory and use `N_ITERS="1"`. Extra MARSE policy settings are ignored by `inference.py` for these models.
 
 Each evaluation directory contains per-sample audio, per-sample `metrics.csv`, and aggregate `results.csv`.
+
+## Citation 
+
+...
+
+## License
+
+This repository is released under the MIT License. See `LICENSE`.
+
+Dataset generators, generated datasets, pretrained models, and documentation site assets may have separate terms. See `THIRD_PARTY_NOTICES.md` and the linked upstream projects.

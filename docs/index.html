@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Yoto Fujita">
-<meta name="dcterms.date" content="2026-05-19">
+<meta name="dcterms.date" content="2026-07-13">
 
 <title>Masked Autoregressive Speech Enhancement with Continuous Neural Audio Codec Representations</title>
 <style>
@@ -124,7 +124,9 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="abstract" class="level1">
 <h2>Abstract</h2>
+
 <p>Previous work on speech enhancement (SE) based on masked generative modeling relied on discrete token representations of audio signals, obtained using neural audio codecs (NACs). However, a recent study has shown that continuous latent representations of NACs can be advantageous for SE in terms of speech quality and intelligibility. In this work, we propose masked autoregressive SE (MARSE), a unified probabilistic framework for SE based on iterative decoding of masked clean speech frames using continuous NAC representations of speech. In particular, we investigate a set of different decoding policies, ceteris paribus, that is, using the same DNN (a Conformer model), the same NAC (the DAC codec) and the same training setup. The results show that the proposed framework enables a flexible trade-off between SE performance and computational cost.</p>
+
 <p><em>Note:</em> The source code repository is still a work in progress.</p>
 </section>
 <section id="method" class="level1">
@@ -141,7 +143,21 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>DNSMOS OVRL score obtained by the proposed MARSE model (for the three decoding policies) and the C-AR and C-NAR baselines on a subset of 300 samples from Libri1Mix test, as a function of the number of decoding iterations.</figcaption>
 </figure>
 <section id="audio-example" class="level2">
-<h3>Random Audio Examples</h3>
+<h3>Audio Examples</h3>
+
+<p>
+The audio samples below were randomly selected.
+</p> 
+
+<p>The "Clean" entry contains the ground-truth clean speech signal, while the "Clean (DAC)" entry contains the same signal encoded and decoded by the DAC neural audio codec, isolating the degradation introduced by the codec itself from that introduced by the enhancement models.
+</p>
+
+<p>
+SNR values (in dB) were computed as the difference between the ITU-R BS.1770-4 integrated loudness (LUFS) of the clean signal and that of the noise, following the LibriMix dataset creation protocol.
+</p>
+
+<br>
+
 <label for="dataset-select">Dataset</label>
 <select id="dataset-select">
   <option value="libri2mix">Libri1Mix</option>
@@ -179,26 +195,26 @@ const datasetSamples = {
   ]
 };
 const sampleLabels = {
-  "Libri2Mix_test_1089-134686-0007_7021-85628-0018": "Libri2Mix example 1 (SNR: 10.13)",
-  "Libri2Mix_test_1089-134691-0019_672-122797-0023": "Libri2Mix example 2 (SNR: 5.12)",
-  "Libri2Mix_test_1089-134686-0024_1995-1836-0013": "Libri2Mix example 3 (SNR: 2.86)",
-  "Libri2Mix_test_1089-134691-0014_7127-75947-0023": "Libri2Mix example 4 (SNR: 0.53)",
-  "Libri2Mix_test_1284-1180-0020_8555-284447-0005": "Libri2Mix example 5 (SNR: 1.90)",
-  "Libri2Mix_test_1221-135766-0003_1320-122617-0009": "Libri2Mix example 6 (SNR: 7.63)",
-  "Libri2Mix_test_1284-1180-0032_2830-3979-0003": "Libri2Mix example 7 (SNR: 4.43)",
-  "Libri2Mix_test_1284-1180-0005_6829-68771-0000": "Libri2Mix example 8 (SNR: 5.01)",
-  "Libri2Mix_test_1284-1180-0014_6829-68769-0006": "Libri2Mix example 9 (SNR: 3.63)",
-  "Libri2Mix_test_121-127105-0019_4446-2275-0029": "Libri2Mix example 10 (SNR: 3.64)",
-  "Libri1Mix_test_1363-135842-0000": "LibriDEMAND example 1 (SNR: 7.30)",
-  "Libri1Mix_test_1898-145720-0018": "LibriDEMAND example 2 (SNR: -2.50)",
-  "Libri1Mix_test_441-130108-0041": "LibriDEMAND example 3 (SNR: -4.85)",
-  "Libri1Mix_test_8238-283452-0035": "LibriDEMAND example 4 (SNR: -1.82)",
-  "Libri1Mix_test_3699-175950-0005": "LibriDEMAND example 5 (SNR: -12.49)",
-  "Libri1Mix_test_27-124992-0056": "LibriDEMAND example 6 (SNR: -0.98)",
-  "Libri1Mix_test_229-130880-0014": "LibriDEMAND example 7 (SNR: -5.06)",
-  "Libri1Mix_test_2952-410-0016": "LibriDEMAND example 8 (SNR: -8.67)",
-  "Libri1Mix_test_6078-54013-0044": "LibriDEMAND example 9 (SNR: -6.81)",
-  "Libri1Mix_test_201-122255-0029": "LibriDEMAND example 10 (SNR: 0.55)",
+  "Libri2Mix_test_1089-134686-0007_7021-85628-0018": "Libri2Mix example 1 (SNR: 10.64 dB)",
+  "Libri2Mix_test_1089-134691-0019_672-122797-0023": "Libri2Mix example 2 (SNR: 6.35 dB)",
+  "Libri2Mix_test_1089-134686-0024_1995-1836-0013": "Libri2Mix example 3 (SNR: 3.89 dB)",
+  "Libri2Mix_test_1089-134691-0014_7127-75947-0023": "Libri2Mix example 4 (SNR: 2.98 dB)",
+  "Libri2Mix_test_1284-1180-0020_8555-284447-0005": "Libri2Mix example 5 (SNR: 2.71 dB)",
+  "Libri2Mix_test_1221-135766-0003_1320-122617-0009": "Libri2Mix example 6 (SNR: 9.52 dB)",
+  "Libri2Mix_test_1284-1180-0032_2830-3979-0003": "Libri2Mix example 7 (SNR: 5.21 dB)",
+  "Libri2Mix_test_1284-1180-0005_6829-68771-0000": "Libri2Mix example 8 (SNR: 5.91 dB)",
+  "Libri2Mix_test_1284-1180-0014_6829-68769-0006": "Libri2Mix example 9 (SNR: 5.05 dB)",
+  "Libri2Mix_test_121-127105-0019_4446-2275-0029": "Libri2Mix example 10 (SNR: 5.79 dB)",
+  "Libri1Mix_test_1363-135842-0000": "LibriDEMAND example 1 (SNR: 1.56 dB)",
+  "Libri1Mix_test_1898-145720-0018": "LibriDEMAND example 2 (SNR: 9.33 dB)",
+  "Libri1Mix_test_441-130108-0041": "LibriDEMAND example 3 (SNR: 5.07 dB)",
+  "Libri1Mix_test_8238-283452-0035": "LibriDEMAND example 4 (SNR: 4.37 dB)",
+  "Libri1Mix_test_3699-175950-0005": "LibriDEMAND example 5 (SNR: -0.69 dB)",
+  "Libri1Mix_test_27-124992-0056": "LibriDEMAND example 6 (SNR: 7.45 dB)",
+  "Libri1Mix_test_229-130880-0014": "LibriDEMAND example 7 (SNR: 1.90 dB)",
+  "Libri1Mix_test_2952-410-0016": "LibriDEMAND example 8 (SNR: 5.61 dB)",
+  "Libri1Mix_test_6078-54013-0044": "LibriDEMAND example 9 (SNR: 3.50 dB)",
+  "Libri1Mix_test_201-122255-0029": "LibriDEMAND example 10 (SNR: 4.26 dB)",
 };
 const datasetSelect = document.getElementById("dataset-select");
 const sampleSelect = document.getElementById("sample-select");
@@ -255,7 +271,8 @@ function normalizeSampleTables() {
     const summaryThead = summaryTable.querySelector("thead");
     const summaryHeaderRow = summaryThead?.querySelector("tr");
     if (summaryThead && summaryHeaderRow) {
-      setEqualColgroup(summaryTable, "25%", 4);
+      const columnCount = summaryHeaderRow.children.length;
+      setEqualColgroup(summaryTable, `${100 / columnCount}%`, columnCount);
       summaryTable.style.borderTop = "none";
     }
     marseTables.forEach((table) => {
@@ -328,25 +345,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 class="anchored" data-anchor-id="libri2mix-example-1">Libri2Mix example 1 (SNR: 10.13)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134686-0007_7021-85628-0018/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1089-134686-0007_7021-85628-0018/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1089-134686-0007_7021-85628-0018/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134686-0007_7021-85628-0018/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/DPTNet_N1/Libri2Mix_test_1089-134686-0007_7021-85628-0018/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
@@ -481,25 +507,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 class="anchored" data-anchor-id="libri2mix-example-2">Libri2Mix example 2 (SNR: 5.12)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134691-0019_672-122797-0023/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1089-134691-0019_672-122797-0023/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1089-134691-0019_672-122797-0023/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134691-0019_672-122797-0023/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/DPTNet_N1/Libri2Mix_test_1089-134691-0019_672-122797-0023/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
@@ -635,25 +670,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 data-anchor-id="libri2mix-example-3">Libri2Mix example 3 (SNR: 2.86)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134686-0024_1995-1836-0013/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1089-134686-0024_1995-1836-0013/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1089-134686-0024_1995-1836-0013/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134686-0024_1995-1836-0013/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/DPTNet_N1/Libri2Mix_test_1089-134686-0024_1995-1836-0013/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
@@ -789,25 +833,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 data-anchor-id="libri2mix-example-4">Libri2Mix example 4 (SNR: 0.53)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134691-0014_7127-75947-0023/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1089-134691-0014_7127-75947-0023/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1089-134691-0014_7127-75947-0023/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134691-0014_7127-75947-0023/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/DPTNet_N1/Libri2Mix_test_1089-134691-0014_7127-75947-0023/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
@@ -943,25 +996,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 data-anchor-id="libri2mix-example-5">Libri2Mix example 5 (SNR: 1.90)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0020_8555-284447-0005/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1284-1180-0020_8555-284447-0005/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1284-1180-0020_8555-284447-0005/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0020_8555-284447-0005/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/DPTNet_N1/Libri2Mix_test_1284-1180-0020_8555-284447-0005/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
@@ -1097,25 +1159,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 data-anchor-id="libri2mix-example-6">Libri2Mix example 6 (SNR: 7.63)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1221-135766-0003_1320-122617-0009/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1221-135766-0003_1320-122617-0009/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1221-135766-0003_1320-122617-0009/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1221-135766-0003_1320-122617-0009/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/DPTNet_N1/Libri2Mix_test_1221-135766-0003_1320-122617-0009/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
@@ -1251,25 +1322,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 data-anchor-id="libri2mix-example-7">Libri2Mix example 7 (SNR: 4.43)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0032_2830-3979-0003/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1284-1180-0032_2830-3979-0003/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1284-1180-0032_2830-3979-0003/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0032_2830-3979-0003/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/DPTNet_N1/Libri2Mix_test_1284-1180-0032_2830-3979-0003/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
@@ -1405,25 +1485,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 data-anchor-id="libri2mix-example-8">Libri2Mix example 8 (SNR: 5.01)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0005_6829-68771-0000/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1284-1180-0005_6829-68771-0000/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1284-1180-0005_6829-68771-0000/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0005_6829-68771-0000/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/DPTNet_N1/Libri2Mix_test_1284-1180-0005_6829-68771-0000/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
@@ -1559,25 +1648,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 data-anchor-id="libri2mix-example-9">Libri2Mix example 9 (SNR: 3.63)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0014_6829-68769-0006/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1284-1180-0014_6829-68769-0006/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1284-1180-0014_6829-68769-0006/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0014_6829-68769-0006/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/DPTNet_N1/Libri2Mix_test_1284-1180-0014_6829-68769-0006/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
@@ -1713,25 +1811,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 data-anchor-id="libri2mix-example-10">Libri2Mix example 10 (SNR: 3.64)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_121-127105-0019_4446-2275-0029/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_121-127105-0019_4446-2275-0029/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_121-127105-0019_4446-2275-0029/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_121-127105-0019_4446-2275-0029/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/cnar_N1/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/c_ar_N50/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/ConvTasNet_N1/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libri2mix/DPTNet_N1/Libri2Mix_test_121-127105-0019_4446-2275-0029/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
@@ -1867,25 +1974,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 data-anchor-id="libridemand-example-1">LibriDEMAND example 1 (SNR: 7.30)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_1363-135842-0000/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_1363-135842-0000/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_1363-135842-0000/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_1363-135842-0000/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_1363-135842-0000/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/c_ar_N50/Libri1Mix_test_1363-135842-0000/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_1363-135842-0000/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/DPTNet_N1/Libri1Mix_test_1363-135842-0000/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
@@ -2021,25 +2137,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 data-anchor-id="libridemand-example-2">LibriDEMAND example 2 (SNR: -2.50)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_1898-145720-0018/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_1898-145720-0018/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_1898-145720-0018/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_1898-145720-0018/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_1898-145720-0018/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/c_ar_N50/Libri1Mix_test_1898-145720-0018/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_1898-145720-0018/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/DPTNet_N1/Libri1Mix_test_1898-145720-0018/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
@@ -2175,25 +2300,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 data-anchor-id="libridemand-example-3">LibriDEMAND example 3 (SNR: -4.85)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_441-130108-0041/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_441-130108-0041/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_441-130108-0041/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_441-130108-0041/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_441-130108-0041/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/c_ar_N50/Libri1Mix_test_441-130108-0041/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_441-130108-0041/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/DPTNet_N1/Libri1Mix_test_441-130108-0041/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
@@ -2329,25 +2463,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 data-anchor-id="libridemand-example-4">LibriDEMAND example 4 (SNR: -1.82)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_8238-283452-0035/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_8238-283452-0035/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_8238-283452-0035/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_8238-283452-0035/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_8238-283452-0035/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/c_ar_N50/Libri1Mix_test_8238-283452-0035/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_8238-283452-0035/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/DPTNet_N1/Libri1Mix_test_8238-283452-0035/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
@@ -2483,25 +2626,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 data-anchor-id="libridemand-example-5">LibriDEMAND example 5 (SNR: -12.49)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_3699-175950-0005/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_3699-175950-0005/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_3699-175950-0005/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_3699-175950-0005/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_3699-175950-0005/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/c_ar_N50/Libri1Mix_test_3699-175950-0005/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_3699-175950-0005/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/DPTNet_N1/Libri1Mix_test_3699-175950-0005/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
@@ -2637,25 +2789,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 data-anchor-id="libridemand-example-6">LibriDEMAND example 6 (SNR: -0.98)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_27-124992-0056/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_27-124992-0056/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_27-124992-0056/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_27-124992-0056/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_27-124992-0056/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/c_ar_N50/Libri1Mix_test_27-124992-0056/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_27-124992-0056/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/DPTNet_N1/Libri1Mix_test_27-124992-0056/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
@@ -2791,25 +2952,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 data-anchor-id="libridemand-example-7">LibriDEMAND example 7 (SNR: -5.06)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_229-130880-0014/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_229-130880-0014/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_229-130880-0014/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_229-130880-0014/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_229-130880-0014/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/c_ar_N50/Libri1Mix_test_229-130880-0014/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_229-130880-0014/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/DPTNet_N1/Libri1Mix_test_229-130880-0014/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
@@ -2945,25 +3115,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 data-anchor-id="libridemand-example-8">LibriDEMAND example 8 (SNR: -8.67)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_2952-410-0016/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_2952-410-0016/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_2952-410-0016/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_2952-410-0016/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_2952-410-0016/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/c_ar_N50/Libri1Mix_test_2952-410-0016/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_2952-410-0016/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/DPTNet_N1/Libri1Mix_test_2952-410-0016/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
@@ -3099,25 +3278,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 data-anchor-id="libridemand-example-9">LibriDEMAND example 9 (SNR: -6.81)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_6078-54013-0044/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_6078-54013-0044/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_6078-54013-0044/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_6078-54013-0044/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_6078-54013-0044/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/c_ar_N50/Libri1Mix_test_6078-54013-0044/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_6078-54013-0044/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/DPTNet_N1/Libri1Mix_test_6078-54013-0044/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
@@ -3253,25 +3441,34 @@ window.addEventListener("DOMContentLoaded", () => {
 <h4 data-anchor-id="libridemand-example-10">LibriDEMAND example 10 (SNR: 0.55)</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
+<col style="width: 14.2857%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Noisy</th>
 <th>Clean</th>
+<th>Clean (DAC)</th>
 <th>C-NAR</th>
 <th>C-AR</th>
+<th>ConvTasNet</th>
+<th>DPTNet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_201-122255-0029/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_201-122255-0029/noisy.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_201-122255-0029/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_201-122255-0029/clean.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/cnar_N1/Libri1Mix_test_201-122255-0029/reconstructed.wav"></audio></td>
 <td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/c_ar_N50/Libri1Mix_test_201-122255-0029/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/ConvTasNet_N1/Libri1Mix_test_201-122255-0029/reconstructed.wav"></audio></td>
+<td><audio controls="" style="width: 100px;" src="resources/audio/libridemand/DPTNet_N1/Libri1Mix_test_201-122255-0029/reconstructed.wav"></audio></td>
 </tr>
 </tbody>
 </table>
